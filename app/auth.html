@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
+    <script src="https://statics.teams.microsoft.com/sdk/v0.2/js/MicrosoftTeams.min.js"></script>
+    <script type="text/javascript">
+        
+        // Initialize microsoft teams tab library
+        microsoftTeams.initialize();
+        
+        // Setup auth parameters for ADAL
+        window.config = {
+            instance: "https://login.microsoftonline.com/",
+            tenant: "common",
+            clientId: "c6951c6d-dcaa-4e45-b4b8-2763c7916569",
+            postLogoutRedirectUri: window.location.origin,
+            cacheLocation: "localStorage",
+            endpoints: {
+                "https://graph.microsoft.com": "https://graph.microsoft.com"
+            }
+        };
+
+        // Setup authcontext
+        var authContext = new AuthenticationContext(window.config);
+        if (authContext.isCallback(window.location.hash))
+            authContext.handleWindowCallback(window.location.hash);
+        else {
+            // Check if user is cached
+            var user = authContext.getCachedUser();
+            if (!user)
+                authContext.login(); // No cached user...force login
+            else {
+                authContext.acquireToken("https://graph.microsoft.com", function(error, token) {
+                    if (error || !token) {
+                        // TODO: this could cause infinite loop
+                        // Should use microsoftTeams.authentication.notifyFailure after one try
+                        authContext.login();
+                    }
+                    else
+                        microsoftTeams.authentication.notifySuccess(token);
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <p>TODO: here you could display config form...at minimum allow user to set tab name</p>
+    <script src="https://statics.teams.microsoft.com/sdk/v0.2/js/MicrosoftTeams.min.js"></script>
+    <script type="text/javascript">
+        // Initialize microsoft teams tab library
+        microsoftTeams.initialize();
+
+        // Configure the save event
+        microsoftTeams.settings.registerOnSaveHandler(function (saveEvent) {
+            // Save the settings for the tab and notify of success
+            microsoftTeams.settings.setSettings({
+                contentUrl: "https://localhost:8443/app/tab.html",
+                suggestedDisplayName: "Tab Auth Sample",
+                websiteUrl: "https://localhost:8443/"
+            });
+            saveEvent.notifySuccess();
+        });
+
+        // Automatically set the save state to success
+        microsoftTeams.settings.setValidityState(true);
+    </script>
+</body>
+</html>

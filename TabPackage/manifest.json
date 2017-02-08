@@ -1,0 +1,28 @@
+﻿{
+  "$schema": "https://statics.teams.microsoft.com/sdk/v0.2/manifest/MicrosoftTeams.schema.json",
+  "manifestVersion": "0.2",
+  "id": "tabauthsample",
+  "version": "1.0",
+  "name": "Tab Auth Sample",
+  "developer": {
+    "name": "Developer Name",
+    "websiteUrl": "https://localhost:8443/app/todo.html",
+    "privacyUrl": "https://localhost:8443/app/todo.html",
+    "termsOfUseUrl": "https://localhost:8443/app/todo.html"
+  },
+  "description": {
+    "short": "Tab to demonstrate tab authentication.",
+    "full": "Tab to demonstrate tab authentication."
+  },
+  "icons": {
+    "44": "icon44.png",
+    "88": "icon88.png"
+  },
+  "accentColor": "#333333",
+  "configUrl": "https://localhost:8443/app/config.html",
+  "canUpdateConfig": false,
+  "needsIdentity": false,
+  "validDomains": [
+    "localhost:8443"
+  ]
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="refresh()">Refresh Data</button>
+    <h1 id="auth"></h1>
+    <script src="https://statics.teams.microsoft.com/sdk/v0.2/js/MicrosoftTeams.min.js"></script>
+    <script type="text/javascript">
+        // Initialize microsoft teams tab library
+        microsoftTeams.initialize();
+        var token = null;
+
+        // getData function to perform auth flow and get user's Data
+        var refresh = function() {
+            document.getElementById("auth").innerText = "Loading...";
+            if (token == null)
+            {
+                microsoftTeams.authentication.authenticate({
+                    url: "/app/auth.html",
+                    width: 400,
+                    height: 400,
+                    successCallback: function(t) {
+                        // Note: token is only good for one hour
+                        token = t;
+                        getData(token);
+                    },
+                    failureCallback: function(err) {
+                        document.getElementById("auth").innerText("Failed to get authenticate and get token.");
+                    }
+                });
+            }
+            else
+                getData(token);
+        };
+
+        var getData = function(token) {
+            // Use XMLHttpRequest to call Microsoft Graph for the users data
+            var req = new XMLHttpRequest();
+            req.open("GET", "https://graph.microsoft.com/v1.0/me", false);
+            req.setRequestHeader("Authorization", "Bearer " + token);
+            req.setRequestHeader("Accept", "application/json;odata.metadata=minimal;");
+            req.send();
+            var result = JSON.parse(req.responseText);
+
+            // Display the user's displayName
+            document.getElementById("auth").innerText = result.displayName;
+        };
+    </script>
+</body>
+</html>
